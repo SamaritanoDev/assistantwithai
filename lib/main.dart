@@ -1,3 +1,4 @@
+import 'package:assistantwithai/src/constants/colors_enviroments.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,10 +10,32 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    final color = Theme.of(context).colorScheme;
+
+    return MaterialApp(
+      theme: ThemeData(
+        colorSchemeSeed: const Color(myColorPrimary),
+        // colorScheme: ColorScheme.fromSeed(
+        //   seedColor: const Color(colorSecondary),
+        //   secondary: const Color(colorSecondary),
+        //   tertiary: const Color(colorTertiary),
+        // ),
+      ),
       home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+        appBar: AppBar(
+          backgroundColor: const Color(myColorPrimary),
+          title: const Text(
+            'RutinaPro',
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: const Icon(
+            Icons.photo,
+          ),
+        ),
+        body: const Center(
+          child: Text('Rutina Pro'),
         ),
       ),
     );
