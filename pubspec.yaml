@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  badges: ^3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +18,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  
+  assets:
+  - assets/undraw_fitness_tracker.png
+  - assets/undraw_personal_training.png
+  - assets/undraw_Working_out_re_nhkg.png
