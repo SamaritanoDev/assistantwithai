@@ -7,19 +7,21 @@ environment:
   sdk: ^3.5.4
 
 dependencies:
+  badges: ^3.1.2
+  file_picker: ^8.1.4
   flutter:
     sdk: flutter
-  badges: ^3.1.2
+  google_generative_ai: ^0.4.6
 
 dev_dependencies:
+  flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true
-  
+
   assets:
-  - assets/undraw_fitness_tracker.png
-  - assets/undraw_personal_training.png
-  - assets/undraw_Working_out_re_nhkg.png
+    - assets/undraw_fitness_tracker.png
+    - assets/undraw_personal_training.png
+    - assets/undraw_Working_out_re_nhkg.png

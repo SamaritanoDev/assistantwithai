@@ -1,3 +1,4 @@
+import 'package:assistantwithai/src/common_widgets/image_custom.dart';
 import 'package:assistantwithai/src/constants/colors_enviroments.dart';
 import 'package:assistantwithai/src/features/image_upload/presentation/widgets/Option_Custom.dart';
 import 'package:flutter/material.dart';
@@ -25,14 +26,7 @@ class Imageuploadscreen extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
-              SizedBox(
-                height: 350,
-                child: Image.asset(
-                  fitnessApp,
-                  fit: BoxFit.cover,
-                ),
-              ),
-
+              const ImageCustom(imagePath: fitnessApp),
               const _Contend(),
               const SizedBox(height: 10),
               //opciones
