@@ -1,9 +1,10 @@
-import 'dart:convert';
 import 'dart:typed_data';
 import 'package:assistantwithai/src/common_widgets/outline_button.dart';
 import 'package:assistantwithai/src/features/image_upload/data/models/image_upload.dart';
 import 'package:assistantwithai/src/features/image_upload/services/instruction_promt.dart';
 import 'package:assistantwithai/src/features/input_promt/data/models/content_options.dart';
+import 'package:assistantwithai/src/features/input_promt/presentation/widgets/sliding_rotine.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PersonalizationRoutineScreen extends StatefulWidget {
@@ -24,24 +25,20 @@ class _PersonalizationRoutineScreenState
     extends State<PersonalizationRoutineScreen> {
   bool isLoading = false;
   List<ContentOptions> contendOptions = [];
-  final ImageUpload imageUpload = ImageUpload();
+  final ImageUpload imageUpload = ImageUpload(fileBytes: Uint8List(0));
   final instruction = Instruction();
 
   Future<void> _generatedContendPersonalizationRoutine() async {
-    if (imageUpload.fileBytes != null) {
-      debugPrint(
-          "imageUpload desde PersonalizationRoutineScreen: ${imageUpload.fileBytes}");
+    debugPrint(
+        "imageUpload desde PersonalizationRoutineScreen: ${imageUpload.fileBytes}");
 
-      // Imprimir los valores de contendOptions
-      for (var option in contendOptions) {
-        debugPrint("idContentOptions: ${option.idContentOptions}");
-        ("exerciseGoal: ${option.exerciseGoal}");
-        ("experienceLevel: ${option.experienceLevel}");
-        ("desiredDurationOfTheRoutine: ${option.desiredDurationOfTheRoutine}");
-        ("availablePhotoEquipment: ${option.availablePhotoEquipment}");
-      }
-    } else {
-      debugPrint("imageUpload.fileBytes esta vacio");
+    // Imprimir los valores de contendOptions
+    for (var option in contendOptions) {
+      debugPrint("idContentOptions: ${option.idContentOptions}");
+      ("exerciseGoal: ${option.exerciseGoal}");
+      ("experienceLevel: ${option.experienceLevel}");
+      ("desiredDurationOfTheRoutine: ${option.desiredDurationOfTheRoutine}");
+      ("availablePhotoEquipment: ${option.availablePhotoEquipment}");
     }
   }
 
@@ -65,7 +62,13 @@ class _PersonalizationRoutineScreenState
             const SizedBox(height: 30),
             MyOutlinedButton(
               onPressed: () {
-                _generatedContendPersonalizationRoutine();
+                // _generatedContendPersonalizationRoutine();
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (context) => const SlidingRoutine(),
+                );
               },
             )
           ],

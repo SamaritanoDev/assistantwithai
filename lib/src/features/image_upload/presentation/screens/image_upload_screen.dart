@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:assistantwithai/src/common_widgets/image_custom.dart';
 import 'package:assistantwithai/src/constants/constants.dart';
 import 'package:assistantwithai/src/features/image_upload/image_upload.dart';
@@ -56,7 +58,7 @@ class _OptionsBadges extends StatefulWidget {
 class _OptionsBadgesState extends State<_OptionsBadges> {
   List<ContentOptions> contendOptions = [];
 
-  final ImageUpload imageUpload = ImageUpload();
+  final ImageUpload imageUpload = ImageUpload(fileBytes: Uint8List(0));
 
   Future<void> _selectFile() async {
     final result = await FilePicker.platform.pickFiles(type: FileType.image);
@@ -77,7 +79,7 @@ class _OptionsBadgesState extends State<_OptionsBadges> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => PersonalizationRoutineScreen(
-              imageBytes: imageBytes,
+              imageBytes:   imageUpload.fileBytes,
             ),
           ),
         );

@@ -1,15 +1,13 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:assistantwithai/src/constants/assets.dart';
-import 'package:assistantwithai/src/features/image_upload/data/models/image_upload.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
 class Instruction {
-  Future<String> generatedContendRequeriments(ImageUpload imageUpload) async {
+  Future<String> generatedContendRequeriments(Uint8List imageBytes) async {
     final model =
         GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKeyValue);
 
-    final Uint8List imageBytes = imageUpload.fileBytes!;
     //Crea la instrucción
     final prompt = TextPart(
         'En idioma español puedes generar contenido, porque eres un entrenador personal de ejericio fisico, y en base a está imagen, que es un equipo de ejericio para entrenar, genera contenido utilizando este esquema JSON:\n\n'
