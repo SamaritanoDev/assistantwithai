@@ -1,18 +1,17 @@
-import 'dart:convert';
 import 'dart:typed_data';
 import 'package:assistantwithai/src/common_widgets/outline_button.dart';
 import 'package:assistantwithai/src/constants/colors_enviroments.dart';
-import 'package:assistantwithai/src/features/image_upload/data/models/image_upload.dart';
-import 'package:assistantwithai/src/features/image_upload/services/instruction_promt.dart';
 import 'package:assistantwithai/src/features/input_promt/data/models/content_options.dart';
-import 'package:assistantwithai/src/features/input_promt/presentation/widgets/sliding_rotine.dart';
+import 'package:assistantwithai/src/features/input_promt/presentation/screens/image_preview_screen.dart';
 import 'package:flutter/material.dart';
 
 class PersonalizationRoutineScreen extends StatefulWidget {
+  final List<ContentOptions> contentOptions;
   final Uint8List imageBytes;
 
   const PersonalizationRoutineScreen({
     super.key,
+    required this.contentOptions,
     required this.imageBytes,
   });
 
@@ -23,78 +22,21 @@ class PersonalizationRoutineScreen extends StatefulWidget {
 
 class _PersonalizationRoutineScreenState
     extends State<PersonalizationRoutineScreen> {
-  bool isLoading = false;
-  List<ContentOptions> contendOptions = [];
-  final ImageUpload imageUpload = ImageUpload(fileBytes: Uint8List(0));
-  final instruction = Instruction();
-
-  Future<void> _generatedContendPersonalizationRoutine() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    try {
-      // Obtener la respuesta del promt
-      final cleanedResponse =
-          await instruction.generatedContendRequeriments(widget.imageBytes);
-
-      // Decodificar el JSON recibido
-      final List<dynamic> jsonData = jsonDecode(cleanedResponse);
-
-      debugPrint("cleanedResponse: $cleanedResponse");
-
-      setState(() {
-        contendOptions =
-            jsonData.map((item) => ContentOptions.fromJson(item)).toList();
-        isLoading = false; // Detener el indicador de progreso
-      });
-
-      // Mostrar el modal solo si se cargaron los datos correctamente
-      if (contendOptions.isNotEmpty) {
-        _showCustomizationModal();
-      }
-    } catch (e) {
-      // Manejar error y detener el indicador de progreso
-      setState(() {
-        isLoading = false;
-      });
-
-      debugPrint("Error generando el contenido: $e");
-
-      // Mostrar un mensaje de error al usuario
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Error'),
-          content: const Text(
-              'Hubo un problema al generar la rutina. Por favor, intenta de nuevo más tarde.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Aceptar'),
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
-  void _showCustomizationModal() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => SlidingRoutine(
-        contentOptions: contendOptions,
-        imageBytes: widget.imageBytes,
-      ),
-    );
-  }
+  // Variables para almacenar las selecciones del usuario
+  String? selectedExperienceLevel;
+  String? selectedDuration;
+  List<String> selectedGoals = [];
+  List<String> selectedEquipment = [];
 
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    final contentOptions = widget.contentOptions.first;
+
+    final labelStyle = textTheme.bodyLarge
+        ?.copyWith(color: color.primary, fontWeight: FontWeight.bold);
+    final valueLabelStyle = textTheme.bodyMedium;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -103,25 +45,120 @@ class _PersonalizationRoutineScreenState
         backgroundColor: const Color(myColorPrimary),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.memory(
-              widget.imageBytes,
-              fit: BoxFit.contain,
-              height: 300,
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          color: Colors.white,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Expanded(
+                      child: Text(
+                        'para este equipo de entrenamiento',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ImagePreviewScreen(imageBytes: widget.imageBytes),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                // Nivel de experiencia (DropdownButton)
+                Text('Nivel de experiencia', style: labelStyle),
+                DropdownButton<String>(
+                  value: selectedExperienceLevel,
+                  hint: Text("Escojamos el nivel", style: valueLabelStyle),
+                  items: contentOptions.experienceLevel.map((String level) {
+                    return DropdownMenuItem(
+                      value: level,
+                      child: Text(level, style: valueLabelStyle),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedExperienceLevel = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+
+                // Duración deseada de la rutina (ChoiceChip)
+                Text('Duración deseada de la rutina', style: labelStyle),
+                Wrap(
+                  spacing: 10,
+                  children: contentOptions.desiredDurationOfTheRoutine
+                      .map((String duration) {
+                    return ChoiceChip(
+                      label: Text(duration, style: valueLabelStyle),
+                      selected: selectedDuration == duration,
+                      onSelected: (isSelected) {
+                        setState(() {
+                          selectedDuration = isSelected ? duration : null;
+                        });
+                      },
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 20),
+
+                // Objetivos del ejercicio (CheckboxListTile)
+                Text('Objetivos del ejercicio', style: labelStyle),
+                Column(
+                  children: contentOptions.exerciseGoal.map((String goal) {
+                    return CheckboxListTile(
+                      title: Text(goal, style: valueLabelStyle),
+                      value: selectedGoals.contains(goal),
+                      onChanged: (bool? isChecked) {
+                        setState(() {
+                          if (isChecked == true) {
+                            selectedGoals.add(goal);
+                          } else {
+                            selectedGoals.remove(goal);
+                          }
+                        });
+                      },
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 20),
+
+                // Equipos disponibles (SwitchListTile)
+                Text('Equipos disponibles', style: labelStyle),
+                Column(
+                  children: contentOptions.availablePhotoEquipment
+                      .map((String equipment) {
+                    final isSelected = selectedEquipment.contains(equipment);
+                    return SwitchListTile(
+                      title: Text(equipment, style: valueLabelStyle),
+                      value: isSelected,
+                      onChanged: (bool isChecked) {
+                        setState(() {
+                          if (isChecked) {
+                            selectedEquipment.add(equipment);
+                          } else {
+                            selectedEquipment.remove(equipment);
+                          }
+                        });
+                      },
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 20),
+
+                // Botón para enviar
+
+                Align(
+                  alignment: Alignment.center,
+                  child: MyOutlinedButton(
+                    onPressed: () {},
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
             ),
-            const SizedBox(height: 30),
-            isLoading
-                ? CircularProgressIndicator(color: color.secondary)
-                : const SizedBox(),
-            const SizedBox(height: 30),
-            MyOutlinedButton(
-              onPressed: () {
-                _generatedContendPersonalizationRoutine();
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );
