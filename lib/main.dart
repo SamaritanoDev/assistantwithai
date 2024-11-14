@@ -13,13 +13,8 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        // colorSchemeSeed: const Color(myColorPrimary),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(colorSecondary),
-          primary: const Color(myColorPrimary),
-          secondary: const Color(colorSecondary),
-          tertiary: const Color(colorTertiary),
-        ),
+        colorSchemeSeed: const Color(myColorPrimary),
+        // ),
       ),
       home: const Imageuploadscreen(),
     );
