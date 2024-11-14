@@ -1,30 +1,14 @@
-import 'dart:typed_data';
 import 'package:assistantwithai/src/common_widgets/image_custom.dart';
-import 'package:assistantwithai/src/constants/assets.dart';
-import 'package:assistantwithai/src/constants/colors_enviroments.dart';
-import 'package:assistantwithai/src/features/image_upload/data/models/content_options.dart';
-import 'package:assistantwithai/src/features/image_upload/data/models/image_upload.dart';
-import 'package:assistantwithai/src/features/image_upload/presentation/screens/image_preview_screen.dart';
-import 'package:assistantwithai/src/features/image_upload/presentation/widgets/Option_Custom.dart';
-import 'package:assistantwithai/src/features/image_upload/services/instruction_promt.dart';
+import 'package:assistantwithai/src/constants/constants.dart';
+import 'package:assistantwithai/src/features/image_upload/image_upload.dart';
+import 'package:assistantwithai/src/features/input_promt/data/models/content_options.dart';
+import 'package:assistantwithai/src/features/input_promt/presentation/screens/personalization_routine_screen.dart';
+import 'package:assistantwithai/src/utils/image_utils.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
-class Imageuploadscreen extends StatefulWidget {
+class Imageuploadscreen extends StatelessWidget {
   const Imageuploadscreen({super.key});
-
-  @override
-  State<Imageuploadscreen> createState() => _ImageuploadscreenState();
-}
-
-class _ImageuploadscreenState extends State<Imageuploadscreen> {
-  bool isLoading = false;
-  String? fileName;
-  PlatformFile? pickedFile;
-  Uint8List? selectedImageBytes;
-  List<ContentOptions> contendOptions = [];
-
-  final instruction = Instruction();
 
   @override
   Widget build(BuildContext context) {
@@ -70,23 +54,36 @@ class _OptionsBadges extends StatefulWidget {
 }
 
 class _OptionsBadgesState extends State<_OptionsBadges> {
-  bool isLoading = false;
-  String? fileName;
-  PlatformFile? pickedFile;
-  Uint8List? selectedImageBytes;
   List<ContentOptions> contendOptions = [];
 
-  final instruction = Instruction();
-  final imageUpload = ImageUpload();
+  final ImageUpload imageUpload = ImageUpload();
 
   Future<void> _selectFile() async {
     final result = await FilePicker.platform.pickFiles(type: FileType.image);
 
     if (result != null) {
-      setState(() {
-        imageUpload.file = result.files.first;
-        debugPrint("result: $result");
-      });
+      final file = result.files.first;
+      // Obtener los bytes de la imagen utilizando la función en utils.dart
+      final imageBytes = await getImageBytes(file);
+
+      if (imageBytes != null) {
+        setState(() {
+          imageUpload.fileBytes = imageBytes;
+          debugPrint(
+              "imageUpload del setState de Imageuploadscreen: ${imageUpload.fileBytes}");
+        });
+
+        // Navegar a la pantalla de vista previa con los bytes de la imagen
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => PersonalizationRoutineScreen(
+              imageBytes: imageBytes,
+            ),
+          ),
+        );
+      } else {
+        debugPrint("No se pudieron obtener los bytes de la imagen.");
+      }
     }
   }
 
