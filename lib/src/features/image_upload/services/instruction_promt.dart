@@ -12,6 +12,7 @@ class Instruction {
     final prompt = TextPart(
         'En idioma español puedes genera un único contenido, porque eres un entrenador personal de ejericio fisico, y en base a está imagen, que es un equipo de ejericio para entrenar, genera contenido utilizando este esquema JSON:\n\n'
         'Y para el campo availablePhotoEquipment lista los equipos que hay en la imagen o foto.\n'
+        'Y para el campo experienceLevel que sea más de unnivel.\n'
         'ContentOptions = {"idContentOptions": string, "exerciseGoal": List<String>, "experienceLevel": List<String>, "desiredDurationOfTheRoutine": List<String>, "availablePhotoEquipment": List<String>}\n'
         'Return: Array<ContentOptions>');
 

@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 
 class MyOutlinedButton extends StatelessWidget {
   final VoidCallback onPressed;
+  final String? valueTitle;
 
   const MyOutlinedButton({
     super.key,
     required this.onPressed,
+    this.valueTitle,
   });
 
   @override
@@ -18,7 +20,7 @@ class MyOutlinedButton extends StatelessWidget {
 
     return OutlinedButton.icon(
       onPressed: onPressed,
-      label: Text('Generar contenido', style: textButtonStyle),
+      label: Text(valueTitle ?? 'Generar contenido', style: textButtonStyle),
       style: OutlinedButton.styleFrom(
         backgroundColor: color.primary,
         side: const BorderSide(color: Color(myColorPrimary)),

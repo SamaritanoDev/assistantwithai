@@ -71,9 +71,6 @@ class _ImageuploadscreenState extends State<Imageuploadscreen> {
             jsonData.map((item) => ContentOptions.fromJson(item)).toList();
         isLoading = false; // Detener el indicador de progreso
       });
-
-      // Mostrar el modal solo si se cargaron los datos correctamente
-      if (contendOptions.isNotEmpty) {}
     } catch (e) {
       // Manejar error y detener el indicador de progreso
       setState(() {
@@ -93,7 +90,7 @@ class _ImageuploadscreenState extends State<Imageuploadscreen> {
       appBar: AppBar(
         backgroundColor: const Color(myColorPrimary),
         title: const Text(
-          'RutinaPro: Generador de Rutina',
+          'RutinaPro IA: Generador de Rutina',
         ),
       ),
       body: Container(
@@ -128,6 +125,7 @@ class _ImageuploadscreenState extends State<Imageuploadscreen> {
                   ? CircularProgressIndicator(
                       color: color.secondary,
                       semanticsLabel: 'Generando contenido con IA',
+                      semanticsValue: 'Generando contenido con IA',
                     )
                   : const SizedBox(),
               const SizedBox(height: 30),

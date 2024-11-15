@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
-class ImagePreviewScreen extends StatelessWidget {
+class ImagePreview extends StatelessWidget {
   final Uint8List imageBytes;
 
-  const ImagePreviewScreen({
+  const ImagePreview({
     super.key,
     required this.imageBytes,
   });

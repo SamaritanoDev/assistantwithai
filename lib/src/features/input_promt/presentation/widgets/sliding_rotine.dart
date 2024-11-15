@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-import 'package:assistantwithai/src/features/input_promt/presentation/screens/image_preview_screen.dart';
+import 'package:assistantwithai/src/features/input_promt/presentation/widgets/image_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:assistantwithai/src/features/input_promt/data/models/content_options.dart';
 
@@ -74,7 +74,7 @@ class _SlidingRoutineState extends State<SlidingRoutine> {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
-                ImagePreviewScreen(imageBytes: widget.imageBytes),
+                ImagePreview(imageBytes: widget.imageBytes),
               ],
             ),
             const SizedBox(height: 20),

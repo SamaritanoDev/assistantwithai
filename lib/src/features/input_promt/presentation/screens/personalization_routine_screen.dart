@@ -1,8 +1,9 @@
 import 'dart:typed_data';
 import 'package:assistantwithai/src/common_widgets/outline_button.dart';
+import 'package:assistantwithai/src/constants/assets.dart';
 import 'package:assistantwithai/src/constants/colors_enviroments.dart';
 import 'package:assistantwithai/src/features/input_promt/data/models/content_options.dart';
-import 'package:assistantwithai/src/features/input_promt/presentation/screens/image_preview_screen.dart';
+import 'package:assistantwithai/src/features/input_promt/presentation/widgets/image_preview.dart';
 import 'package:flutter/material.dart';
 
 class PersonalizationRoutineScreen extends StatefulWidget {
@@ -22,7 +23,7 @@ class PersonalizationRoutineScreen extends StatefulWidget {
 
 class _PersonalizationRoutineScreenState
     extends State<PersonalizationRoutineScreen> {
-  // Variables para almacenar las selecciones del usuario
+  // Variables para almacenar las selecciones del usuarios
   String? selectedExperienceLevel;
   String? selectedDuration;
   List<String> selectedGoals = [];
@@ -37,11 +38,15 @@ class _PersonalizationRoutineScreenState
     final labelStyle = textTheme.bodyLarge
         ?.copyWith(color: color.primary, fontWeight: FontWeight.bold);
     final valueLabelStyle = textTheme.bodyMedium;
+    final titleStyle = textTheme.titleLarge?.copyWith(
+      color: const Color(colorSecondary),
+      fontWeight: FontWeight.bold,
+    );
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Personaliza tu Rutina'),
+        title: const Text('RotinePro IA'),
         backgroundColor: const Color(myColorPrimary),
       ),
       body: Center(
@@ -52,18 +57,23 @@ class _PersonalizationRoutineScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text('Personaliza tu Rutina', style: titleStyle),
                 Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       child: Text(
                         'para este equipo de entrenamiento',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                        style: titleStyle,
                       ),
                     ),
-                    ImagePreviewScreen(imageBytes: widget.imageBytes),
+                    ImagePreview(imageBytes: widget.imageBytes),
                   ],
                 ),
+                const Text(
+                  'Este contenido se ha generado con la IA Generativa de Gemini',
+                  style: TextStyle(color: Color(colorSecondary)),
+                ),
+                Image.asset(personalTraining),
                 const SizedBox(height: 20),
                 // Nivel de experiencia (DropdownButton)
                 Text('Nivel de experiencia', style: labelStyle),
@@ -148,10 +158,10 @@ class _PersonalizationRoutineScreenState
                 const SizedBox(height: 20),
 
                 // Botón para enviar
-
                 Align(
                   alignment: Alignment.center,
                   child: MyOutlinedButton(
+                    valueTitle: 'Generar mi rutina con IA',
                     onPressed: () {},
                   ),
                 ),
