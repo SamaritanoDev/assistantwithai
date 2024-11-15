@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:assistantwithai/src/common_widgets/outline_button.dart';
 import 'package:assistantwithai/src/constants/colors_enviroments.dart';
 import 'package:assistantwithai/src/features/image_upload/data/models/image_upload.dart';
-import 'package:assistantwithai/src/features/image_upload/services/instruction_promt.dart';
+import 'package:assistantwithai/src/features/image_upload/services/personalization_routine_instruction.dart';
 import 'package:assistantwithai/src/features/input_promt/data/models/content_options.dart';
 import 'package:assistantwithai/src/features/input_promt/presentation/widgets/sliding_rotine.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,7 @@ class _PersonalizationRoutineScreen_State
   bool isLoading = false;
   List<ContentOptions> contendOptions = [];
   final ImageUpload imageUpload = ImageUpload(fileBytes: Uint8List(0));
-  final instruction = Instruction();
+  final instruction = InstructionPersonalizationRoutine();
 
   Future<void> _generatedContendPersonalizationRoutine() async {
     setState(() {
@@ -36,7 +36,7 @@ class _PersonalizationRoutineScreen_State
     try {
       // Obtener la respuesta del promt
       final cleanedResponse =
-          await instruction.generatedContendRequeriments(widget.imageBytes);
+          await instruction.generatedDataPersonalizationRoutine(widget.imageBytes);
 
       // Decodificar el JSON recibido
       final List<dynamic> jsonData = jsonDecode(cleanedResponse);

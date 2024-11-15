@@ -3,8 +3,8 @@ import 'dart:typed_data';
 import 'package:assistantwithai/src/constants/assets.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
-class Instruction {
-  Future<String> generatedContendRequeriments(Uint8List imageBytes) async {
+class InstructionPersonalizationRoutine {
+  Future<String> generatedDataPersonalizationRoutine(Uint8List imageBytes) async {
     final model =
         GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKeyValue);
 
@@ -32,6 +32,7 @@ class Instruction {
     final firstCorchete = response.indexOf('[');
     final lastCorchete = response.lastIndexOf(']');
     String recortado = response.substring(firstCorchete, lastCorchete + 1);
+    print("recortado: $recortado");
     return recortado;
   }
 }

@@ -5,6 +5,7 @@ import 'package:assistantwithai/src/constants/assets.dart';
 import 'package:assistantwithai/src/constants/colors_enviroments.dart';
 import 'package:assistantwithai/src/features/input_promt/data/models/content_options.dart';
 import 'package:assistantwithai/src/features/input_promt/presentation/widgets/image_preview.dart';
+import 'package:assistantwithai/src/features/routine/services/generated_routine_instruction.dart';
 import 'package:flutter/material.dart';
 
 class PersonalizationRoutineScreen extends StatelessWidget {
@@ -57,8 +58,7 @@ class PersonalizationRoutineScreen extends StatelessWidget {
                 ),
                 Image.asset(personalTraining),
                 const SizedBox(height: 20),
-                _FormersonalizationRoutine(
-                    contentOptions: contentOptions, imageBytes: imageBytes),
+                _FormersonalizationRoutine(contentOptions: contentOptions),
                 const SizedBox(height: 20),
               ],
             ),
@@ -71,10 +71,8 @@ class PersonalizationRoutineScreen extends StatelessWidget {
 
 class _FormersonalizationRoutine extends StatefulWidget {
   final List<ContentOptions> contentOptions;
-  final Uint8List imageBytes;
   const _FormersonalizationRoutine({
     required this.contentOptions,
-    required this.imageBytes,
   });
 
   @override
@@ -97,10 +95,11 @@ class __FormersonalizationRoutineState
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    final contentOptions = widget.contentOptions.first;
     final labelStyle = textTheme.bodyLarge
         ?.copyWith(color: color.primary, fontWeight: FontWeight.bold);
     final valueLabelStyle = textTheme.bodyMedium;
+
+    final contentOptions = widget.contentOptions.first;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,7 +220,23 @@ class __FormersonalizationRoutineState
         title: 'Confirma tu rutina',
         content: content,
         onConfirm: () {
-          debugPrint('Datos confirmados: ${userSelection.toJson()}');
+          final routineConfirmated = userSelection.toJson();
+          final instrucion = GeneratedRoutineInstruction();
+          instrucion.generatedDataRoutine(routineConfirmated);
+          debugPrint('Datos confirmados: $routineConfirmated');
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) {
+          //       return RoutineScreen(
+          //         routine: Routine(
+          //           goal: userSelection.exerciseGoal,
+          //           exercises: [],
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // );
         },
       ),
     );

@@ -20,7 +20,7 @@ class _ImageuploadscreenState extends State<Imageuploadscreen> {
   bool isLoading = false;
   List<ContentOptions> contendOptions = [];
   final ImageUpload imageUpload = ImageUpload(fileBytes: Uint8List(0));
-  final instruction = Instruction();
+  final instruction = InstructionPersonalizationRoutine();
 
   Future<void> _selectFile() async {
     final result = await FilePicker.platform.pickFiles(type: FileType.image);
@@ -61,7 +61,7 @@ class _ImageuploadscreenState extends State<Imageuploadscreen> {
     try {
       // Obtener la respuesta del promt
       final cleanedResponse =
-          await instruction.generatedContendRequeriments(imageBytes);
+          await instruction.generatedDataPersonalizationRoutine(imageBytes);
 
       // Decodificar el JSON recibido
       final List<dynamic> jsonData = jsonDecode(cleanedResponse);
