@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:assistantwithai/src/common_widgets/image_custom.dart';
+import 'package:assistantwithai/src/common_widgets/loading_custom.dart';
 import 'package:assistantwithai/src/constants/constants.dart';
 import 'package:assistantwithai/src/features/image_upload/image_upload.dart';
 import 'package:assistantwithai/src/features/input_promt/data/models/content_options.dart';
@@ -121,13 +122,7 @@ class _ImageuploadscreenState extends State<Imageuploadscreen> {
                 ],
               ),
               const SizedBox(height: 30),
-              isLoading
-                  ? CircularProgressIndicator(
-                      color: color.secondary,
-                      semanticsLabel: 'Generando contenido con IA',
-                      semanticsValue: 'Generando contenido con IA',
-                    )
-                  : const SizedBox(),
+              isLoading ? const LoadingCustom() : const SizedBox(),
               const SizedBox(height: 30),
               const Spacer(),
               Text('Hecho por Lesly Samaritano | Flutterina Studio',

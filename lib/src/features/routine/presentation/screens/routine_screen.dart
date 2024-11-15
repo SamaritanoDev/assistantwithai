@@ -22,9 +22,27 @@ class RoutineScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Objetivo: ${routine.goal}",
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            const Text(
+              "Tus Objetivos:",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8.0,
+              runSpacing: 4.0,
+              children: routine.goal.map((goal) {
+                return Chip(
+                  label: Text(goal),
+                  avatar: const Icon(Icons.check_circle, color: Colors.green),
+                  backgroundColor: Colors.blue.shade100,
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 16),
+            const Divider(),
+            const Text(
+              "Ejercicios:",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             Expanded(
@@ -34,26 +52,71 @@ class RoutineScreen extends StatelessWidget {
                   final exercise = routine.exercises[index];
                   return Card(
                     margin: const EdgeInsets.symmetric(vertical: 8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            exercise.name,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text("Repeticiones: ${exercise.reps}"),
-                          Text("Tiempo estimado: ${exercise.time}"),
-                        ],
+                    child: ExpansionTile(
+                      leading:
+                          const Icon(Icons.fitness_center, color: Colors.blue),
+                      title: Text(
+                        exercise.name,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                      subtitle: Text("Repeticiones: ${exercise.reps}"),
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(Icons.timer, color: Colors.green),
+                                  const SizedBox(width: 8),
+                                  Text("Tiempo estimado: ${exercise.time}"),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              const Text(
+                                "Recomendaciones:",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Wrap(
+                                spacing: 8.0,
+                                children: exercise.recommendationsExercise
+                                    .map((recommendation) {
+                                  return Chip(
+                                    avatar: const Icon(Icons.lightbulb,
+                                        color: Colors.orange),
+                                    label: Text(recommendation),
+                                    backgroundColor: Colors.orange.shade100,
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   );
                 },
+              ),
+            ),
+            const Divider(),
+            ElevatedButton.icon(
+              onPressed: () {
+                // Acción al finalizar la rutina
+              },
+              icon: const Icon(Icons.check),
+              label: const Text("Completar Rutina"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
               ),
             ),
           ],

@@ -1,10 +1,12 @@
 import 'dart:typed_data';
-import 'package:assistantwithai/src/common_widgets/alert_dialog_custom.dart';
+import 'package:assistantwithai/src/common_widgets/loading_custom.dart';
 import 'package:assistantwithai/src/common_widgets/outline_button.dart';
 import 'package:assistantwithai/src/constants/assets.dart';
 import 'package:assistantwithai/src/constants/colors_enviroments.dart';
 import 'package:assistantwithai/src/features/input_promt/data/models/content_options.dart';
 import 'package:assistantwithai/src/features/input_promt/presentation/widgets/image_preview.dart';
+import 'package:assistantwithai/src/features/routine/data/models/routine.dart';
+import 'package:assistantwithai/src/features/routine/presentation/screens/routine_screen.dart';
 import 'package:assistantwithai/src/features/routine/services/generated_routine_instruction.dart';
 import 'package:flutter/material.dart';
 
@@ -90,6 +92,7 @@ class __FormersonalizationRoutineState
     desiredDurationOfTheRoutine: [],
     availablePhotoEquipment: [],
   );
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +193,7 @@ class __FormersonalizationRoutineState
           }).toList(),
         ),
         const SizedBox(height: 20),
-
+        if (isLoading) const LoadingCustom(),
         // Botón para enviar
         Align(
           alignment: Alignment.center,
@@ -205,38 +208,31 @@ class __FormersonalizationRoutineState
     );
   }
 
-  void _submitForm() {
-    // Crear el texto de contenido a mostrar
-    final String content = 'Tu rutina personalizada final es:.\n'
-        '✓Nivel de experiencia: ${userSelection.experienceLevel.join(', ')}\n'
-        '✓Duración: ${userSelection.desiredDurationOfTheRoutine.join(', ')}\n'
-        '✓Objetivos: ${userSelection.exerciseGoal.join(', ')}\n'
-        '✓Equipos: ${userSelection.availablePhotoEquipment.join(', ')}';
+  void _submitForm() async {
+    setState(() {
+      isLoading = true; // Activa el indicador de carga
+    });
 
-    // Mostrar el CustomAlertDialog
-    showDialog(
-      context: context,
-      builder: (context) => CustomAlertDialog(
-        title: 'Confirma tu rutina',
-        content: content,
-        onConfirm: () {
-          final routineConfirmated = userSelection.toJson();
-          final instrucion = GeneratedRoutineInstruction();
-          instrucion.generatedDataRoutine(routineConfirmated);
-          debugPrint('Datos confirmados: $routineConfirmated');
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) {
-          //       return RoutineScreen(
-          //         routine: Routine(
-          //           goal: userSelection.exerciseGoal,
-          //           exercises: [],
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // );
+    final routineConfirmated = userSelection.toJson();
+    final instrucion = GeneratedRoutineInstruction();
+
+    // Llamada asíncrona para obtener el JSON de la rutina
+    await instrucion.generatedDataRoutine(routineConfirmated);
+
+    setState(() {
+      isLoading = false;
+    });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return RoutineScreen(
+            routine: Routine(
+              goal: userSelection.exerciseGoal,
+              exercises: [],
+            ),
+          );
         },
       ),
     );

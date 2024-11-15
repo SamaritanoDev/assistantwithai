@@ -23,6 +23,7 @@ class GeneratedRoutineInstruction {
 
     final cleanedResponse = _cleanResponse(response.text!);
     print('cleanedResponse: $cleanedResponse');
+
     return cleanedResponse;
   }
 

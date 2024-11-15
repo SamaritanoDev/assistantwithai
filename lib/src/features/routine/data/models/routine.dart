@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-Routine routineFromJson(String str) => Routine.fromJson(json.decode(str));
+List<Routine> routineFromJson(String str) =>
+    List<Routine>.from(json.decode(str).map((x) => Routine.fromJson(x)));
 
-String routineToJson(Routine data) => json.encode(data.toJson());
+String routineToJson(List<Routine> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Routine {
   List<String> goal;
