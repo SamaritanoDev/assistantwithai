@@ -27,16 +27,10 @@ class RoutineScreen extends StatelessWidget {
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            Wrap(
-              spacing: 8.0,
-              runSpacing: 4.0,
-              children: routine.goal.map((goal) {
-                return Chip(
-                  label: Text(goal),
-                  avatar: const Icon(Icons.check_circle, color: Colors.green),
-                  backgroundColor: Colors.blue.shade100,
-                );
-              }).toList(),
+            Chip(
+              label: Text(routine.goal),
+              avatar: const Icon(Icons.check_circle, color: Colors.green),
+              backgroundColor: Colors.blue.shade100,
             ),
             const SizedBox(height: 16),
             const Divider(),

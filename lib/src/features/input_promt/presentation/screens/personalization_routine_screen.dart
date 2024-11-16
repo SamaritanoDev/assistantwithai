@@ -102,96 +102,96 @@ class __FormersonalizationRoutineState
         ?.copyWith(color: color.primary, fontWeight: FontWeight.bold);
     final valueLabelStyle = textTheme.bodyMedium;
 
-    final contentOptions = widget.contentOptions.first;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Nivel de experiencia (DropdownButton)
         Text('Nivel de experiencia', style: labelStyle),
-        DropdownButton<String>(
-          value: userSelection.experienceLevel.isEmpty
-              ? null
-              : userSelection.experienceLevel.first,
-          hint: Text("Escojamos el nivel", style: valueLabelStyle),
-          items: contentOptions.experienceLevel.map((String level) {
-            return DropdownMenuItem(
-              value: level,
-              child: Text(level, style: valueLabelStyle),
-            );
-          }).toList(),
-          onChanged: (value) {
-            setState(() {
-              userSelection.experienceLevel = [value ?? ''];
-            });
-          },
-        ),
+        for (final option in widget.contentOptions)
+          DropdownButton<String>(
+            value: userSelection.experienceLevel.isEmpty
+                ? null
+                : userSelection.experienceLevel.first,
+            hint: Text("Escojamos el nivel", style: valueLabelStyle),
+            items: option.experienceLevel.map((String level) {
+              return DropdownMenuItem(
+                value: level,
+                child: Text(level, style: valueLabelStyle),
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                userSelection.experienceLevel = [value ?? ''];
+              });
+            },
+          ),
         const SizedBox(height: 20),
 
         // Duración deseada de la rutina (ChoiceChip)
         Text('Duración deseada de la rutina', style: labelStyle),
-        Wrap(
-          spacing: 10,
-          children:
-              contentOptions.desiredDurationOfTheRoutine.map((String duration) {
-            return ChoiceChip(
-              label: Text(duration, style: valueLabelStyle),
-              selected:
-                  userSelection.desiredDurationOfTheRoutine.contains(duration),
-              onSelected: (isSelected) {
-                setState(() {
-                  userSelection.desiredDurationOfTheRoutine =
-                      isSelected ? [duration] : [];
-                });
-              },
-            );
-          }).toList(),
-        ),
+        for (final option in widget.contentOptions)
+          Wrap(
+            spacing: 10,
+            children: option.desiredDurationOfTheRoutine.map((String duration) {
+              return ChoiceChip(
+                label: Text(duration, style: valueLabelStyle),
+                selected: userSelection.desiredDurationOfTheRoutine
+                    .contains(duration),
+                onSelected: (isSelected) {
+                  setState(() {
+                    userSelection.desiredDurationOfTheRoutine =
+                        isSelected ? [duration] : [];
+                  });
+                },
+              );
+            }).toList(),
+          ),
         const SizedBox(height: 20),
 
         // Objetivos del ejercicio (CheckboxListTile)
         Text('Objetivos del ejercicio', style: labelStyle),
-        Column(
-          children: contentOptions.exerciseGoal.map((String goal) {
-            return CheckboxListTile(
-              title: Text(goal, style: valueLabelStyle),
-              value: userSelection.exerciseGoal.contains(goal),
-              onChanged: (bool? isChecked) {
-                setState(() {
-                  if (isChecked == true) {
-                    userSelection.exerciseGoal.add(goal);
-                  } else {
-                    userSelection.exerciseGoal.remove(goal);
-                  }
-                });
-              },
-            );
-          }).toList(),
-        ),
+        for (final option in widget.contentOptions)
+          Column(
+            children: option.exerciseGoal.map((String goal) {
+              return CheckboxListTile(
+                title: Text(goal, style: valueLabelStyle),
+                value: userSelection.exerciseGoal.contains(goal),
+                onChanged: (bool? isChecked) {
+                  setState(() {
+                    if (isChecked == true) {
+                      userSelection.exerciseGoal.add(goal);
+                    } else {
+                      userSelection.exerciseGoal.remove(goal);
+                    }
+                  });
+                },
+              );
+            }).toList(),
+          ),
         const SizedBox(height: 20),
 
         // Equipos disponibles (SwitchListTile)
         Text('Equipos disponibles', style: labelStyle),
-        Column(
-          children:
-              contentOptions.availablePhotoEquipment.map((String equipment) {
-            final isSelected =
-                userSelection.availablePhotoEquipment.contains(equipment);
-            return SwitchListTile(
-              title: Text(equipment, style: valueLabelStyle),
-              value: isSelected,
-              onChanged: (bool isChecked) {
-                setState(() {
-                  if (isChecked) {
-                    userSelection.availablePhotoEquipment.add(equipment);
-                  } else {
-                    userSelection.availablePhotoEquipment.remove(equipment);
-                  }
-                });
-              },
-            );
-          }).toList(),
-        ),
+        for (final option in widget.contentOptions)
+          Column(
+            children: option.availablePhotoEquipment.map((String equipment) {
+              final isSelected =
+                  userSelection.availablePhotoEquipment.contains(equipment);
+              return SwitchListTile(
+                title: Text(equipment, style: valueLabelStyle),
+                value: isSelected,
+                onChanged: (bool isChecked) {
+                  setState(() {
+                    if (isChecked) {
+                      userSelection.availablePhotoEquipment.add(equipment);
+                    } else {
+                      userSelection.availablePhotoEquipment.remove(equipment);
+                    }
+                  });
+                },
+              );
+            }).toList(),
+          ),
         const SizedBox(height: 20),
         if (isLoading) const LoadingCustom(),
         // Botón para enviar
@@ -229,7 +229,7 @@ class __FormersonalizationRoutineState
         builder: (context) {
           return RoutineScreen(
             routine: Routine(
-              goal: userSelection.exerciseGoal,
+              goal: '',
               exercises: [],
             ),
           );

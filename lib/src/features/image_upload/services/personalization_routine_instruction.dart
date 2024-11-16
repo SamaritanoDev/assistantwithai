@@ -10,9 +10,9 @@ class InstructionPersonalizationRoutine {
 
     //Crea la instrucción
     final prompt = TextPart(
-        'En idioma español puedes genera un único contenido, porque eres un entrenador personal de ejericio fisico, y en base a está imagen, que es un equipo de ejericio para entrenar, genera contenido utilizando este esquema JSON:\n\n'
+        'En idioma español genera un único contenido o item, porque eres un entrenador personal de ejericio fisico, y en base a está imagen, que es un equipo de ejericio para entrenar, genera contenido utilizando este esquema JSON:\n\n'
         'Y para el campo availablePhotoEquipment lista los equipos que hay en la imagen o foto.\n'
-        'Y para el campo experienceLevel que sea más de unnivel.\n'
+        'Y para el campo experienceLevel que sea al menos dos niveles.\n'
         'ContentOptions = {"idContentOptions": string, "exerciseGoal": List<String>, "experienceLevel": List<String>, "desiredDurationOfTheRoutine": List<String>, "availablePhotoEquipment": List<String>}\n'
         'Return: Array<ContentOptions>');
 
@@ -25,6 +25,7 @@ class InstructionPersonalizationRoutine {
     ]);
 
     final cleanedResponse = _cleanResponse(response.text!);
+    print("cleanedResponse: $cleanedResponse");
     return cleanedResponse;
   }
 

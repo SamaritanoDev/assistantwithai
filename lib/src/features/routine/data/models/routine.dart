@@ -7,7 +7,7 @@ String routineToJson(List<Routine> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Routine {
-  List<String> goal;
+  String goal;
   List<Exercise> exercises;
 
   Routine({
@@ -16,13 +16,13 @@ class Routine {
   });
 
   factory Routine.fromJson(Map<String, dynamic> json) => Routine(
-        goal: List<String>.from(json["goal"].map((x) => x)),
+        goal: json["goal"],
         exercises: List<Exercise>.from(
             json["exercises"].map((x) => Exercise.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "goal": List<dynamic>.from(goal.map((x) => x)),
+        "goal": goal,
         "exercises": List<dynamic>.from(exercises.map((x) => x.toJson())),
       };
 }
